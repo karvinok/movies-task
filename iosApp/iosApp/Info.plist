@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+    <key>BASE_URL</key>
+    <string>https://api.themoviedb.org/3/</string>
+    <key>TMDB_API_KEY</key>
+    <string>your_api_key_here</string>
+    <key>TMDB_TOKEN</key>
+    <string>your_token_here</string>
+</dict>
+</plist>
