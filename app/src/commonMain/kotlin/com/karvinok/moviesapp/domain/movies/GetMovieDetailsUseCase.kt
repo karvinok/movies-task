@@ -1,7 +1,6 @@
 package com.karvinok.moviesapp.domain.movies
 
 import com.karvinok.moviesapp.domain.movies.model.MovieDetails
-import com.karvinok.moviesapp.domain.movies.model.MovieResponseType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

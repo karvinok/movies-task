@@ -1,7 +1,6 @@
 package com.karvinok.moviesapp.domain.movies
 
 import com.karvinok.moviesapp.domain.movies.model.MovieDetails
-import com.karvinok.moviesapp.domain.movies.model.MovieResponseType
 import com.karvinok.moviesapp.domain.movies.model.MoviesPage
 
 interface MoviesRemoteRepository {
