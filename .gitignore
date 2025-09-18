@@ -4,6 +4,8 @@
 **/build/
 xcuserdata
 !src/**/build/
+local.properties
+/iosApp/iosApp/Info.plist
 .idea
 captures
 .externalNativeBuild
