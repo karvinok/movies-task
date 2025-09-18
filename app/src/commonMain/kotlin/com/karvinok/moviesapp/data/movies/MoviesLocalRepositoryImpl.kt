@@ -32,10 +32,6 @@ internal class MoviesLocalRepositoryImpl(
         return movieDao.pagingSource()
     }
 
-    override suspend fun getMoviesCount(): Int {
-        return 0
-    }
-
     override suspend fun addFavorite(movieId: Int) {
         return favoritedMovieDao.addFavorite(FavoritedMovieEntity(movieId))
     }

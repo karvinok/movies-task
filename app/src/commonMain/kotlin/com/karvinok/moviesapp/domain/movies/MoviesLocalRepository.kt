@@ -10,7 +10,6 @@ interface MoviesLocalRepository {
     suspend fun insertAll(movies: List<Movie>, page: Int)
     suspend fun deleteAll()
     fun providePagingSource(): PagingSource<Int, MovieEntity>
-    suspend fun getMoviesCount(): Int
     suspend fun addFavorite(movieId: Int)
     suspend fun removeFavorite(movieId: Int)
     suspend fun isFavorited(movieId: Int): Boolean

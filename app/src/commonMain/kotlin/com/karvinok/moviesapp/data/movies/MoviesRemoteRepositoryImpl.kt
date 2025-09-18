@@ -4,7 +4,6 @@ import com.karvinok.moviesapp.data.movies.model.toDomain
 import com.karvinok.moviesapp.data.movies.model.toMovieDetails
 import com.karvinok.moviesapp.domain.movies.MoviesRemoteRepository
 import com.karvinok.moviesapp.domain.movies.model.MovieDetails
-import com.karvinok.moviesapp.domain.movies.model.MovieResponseType
 import com.karvinok.moviesapp.domain.movies.model.MoviesPage
 import kotlinx.coroutines.delay
 

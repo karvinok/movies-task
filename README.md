@@ -1,10 +1,11 @@
 # Movies App - TMDB Client
 
-Compose Multiplatform mobile application
-that displays popular movies and search functionality using The Movie Database (TMDB) API.
-Built with Jetpack Compose for shared UI and following clean architecture principles.
+## Application is built in Compose Multiplatform.
 
 ## Setup Instructions
+
+### 0. Use AndroidStudio 2025.1.3 
+This step is required to use latest CMP libraries where kotlin 2.2.0 and AGP 8.13 needed to compile. 
 
 ### 1. Clone the Repository
 ```bash
@@ -107,11 +108,38 @@ The app follows **Clean Architecture** principles with clear separation of conce
 - **Ktorfit + Ktor**: HTTP client for API calls
 - **Kotlinx Serialization**: JSON parsing
 
-## Future Improvements
+## TODO: 
 
-- **Unit Tests**: Comprehensive test coverage for business logic
-- **Advanced Filtering**: Genre, year, rating filters
-- **Modularization** Separate all core/domain/data/presentation folders into modules with extendable "convention gradle plugin" https://docs.gradle.org/current/userguide/custom_plugins.html
+### 1 Modularization
+1 Modularization is not implemented due to time constraints, but common separation of concerns is archived, so it wouldn't be a problem.
+As a next step, I'd separate each core/domain/data/presentation folder into a module with extendable "convention gradle plugin" https://docs.gradle.org/current/userguide/custom_plugins.html
+to obtain extendability and configurability of each module:
+KotlinLibraryPlugin (only kmp deps) ->
+ComposeLibraryPlugin (only cmp deps) ->
+FeatureLibraryPlugin (project deps)
+
+So code duplication and price of setting up a new feature is minimized:
+
+```kotlin
+import DependenciesPlugin.Config
+
+plugins {
+    id(Plugins.featureLibraryPlugin)
+}
+
+android {
+    namespace = Config.namespace + ".presentation.movies"
+}
+
+commonDependencies {
+    implementation(project(":domain:movies"))
+    implementation(project(":core:design"))
+}
+```
+
+### 2 React to configurations changes (rotation and screen size)
+
+### 3 Unit tests to cover pagination logic
 
 ## License
 
