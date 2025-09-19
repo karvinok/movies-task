@@ -4,9 +4,14 @@ package com.karvinok.moviesapp.presentation.movies
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.BoundsTransform
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.animateBounds
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +30,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Dataset
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
@@ -37,12 +43,19 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.LookaheadScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -76,6 +89,7 @@ internal fun MoviesLayout(
             .fillMaxSize()
             .systemBarsPadding(),
     ) {
+        var count by rememberSaveable { mutableStateOf(2) }
         Column {
             Row(
                 modifier = Modifier
@@ -83,6 +97,19 @@ internal fun MoviesLayout(
                     .padding(horizontal = spacings.s16, vertical = spacings.s8),
                 horizontalArrangement = Arrangement.spacedBy(spacings.s8)
             ) {
+                Button(
+                    onClick = { count = if (count == 2) 3 else 2 },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colors.bg01,
+                        contentColor = colors.text01
+                    ),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        painter = rememberVectorPainter(Icons.Default.Dataset),
+                        contentDescription = "Icon"
+                    )
+                }
                 Button(
                     onClick = { onIntent(MoviesIntent.SwitchMode(MoviesMode.POPULAR)) },
                     colors = ButtonDefaults.buttonColors(
@@ -141,26 +168,48 @@ internal fun MoviesLayout(
 
         Box(modifier = Modifier.weight(1f)) {
             if (!state.isLoading) {
-                LazyVerticalGrid(
-                    modifier = Modifier.fillMaxSize(),
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(spacings.s16),
-                    horizontalArrangement = Arrangement.spacedBy(spacings.s8),
-                    verticalArrangement = Arrangement.spacedBy(spacings.s8)
-                ) {
-                    items(
-                        count = lazyMovies.itemCount,
-                        key = lazyMovies.itemKey { it.id }
-                    ) { index ->
-                        lazyMovies[index]?.let { movie ->
-                            MovieItem(
-                                movie = movie,
-                                isFavorited = state.favoriteIds.contains(movie.id),
-                                onClick = { onIntent(MoviesIntent.MovieClick(movie)) },
-                                onFavoriteClick = { onIntent(MoviesIntent.ToggleFavorite(movie.id)) },
-                                sharedTransitionScope = sharedTransitionScope,
-                                animatedVisibilityScope = animatedVisibilityScope
-                            )
+                LookaheadScope {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        columns = GridCells.Fixed(count),
+                        contentPadding = PaddingValues(spacings.s16),
+                        horizontalArrangement = Arrangement.spacedBy(spacings.s8),
+                        verticalArrangement = Arrangement.spacedBy(spacings.s8)
+                    ) {
+                        items(
+                            count = lazyMovies.itemCount,
+                            key = lazyMovies.itemKey { it.id }
+                        ) { index ->
+                            lazyMovies[index]?.let { movie ->
+                                MovieItem(
+                                    movie = movie,
+                                    isFavorited = state.favoriteIds.contains(movie.id),
+                                    onClick = { onIntent(MoviesIntent.MovieClick(movie)) },
+                                    modifier = Modifier
+                                        .animateItem()
+                                        .animateBounds(
+                                            this@LookaheadScope,
+                                            boundsTransform = BoundsTransform { _, _ ->
+                                                spring(
+                                                    dampingRatio = Spring.DampingRatioLowBouncy,
+                                                    stiffness = Spring.StiffnessMediumLow,
+                                                    visibilityThreshold = Rect.VisibilityThreshold,
+                                                )
+                                            }
+
+                                        ),
+                                    onFavoriteClick = {
+                                        onIntent(
+                                            MoviesIntent.ToggleFavorite(
+                                                movie.id
+                                            )
+                                        )
+                                    },
+                                    sharedTransitionScope = sharedTransitionScope,
+                                    animatedVisibilityScope = animatedVisibilityScope
+                                )
+                            }
                         }
                     }
                 }
