@@ -93,9 +93,10 @@ android {
 
     val properties = gradleLocalProperties(rootDir, providers)
 
-    val baseUrl = properties.getProperty("BASE_URL")
-    val apiKey = properties.getProperty("TMDB_API_KEY")
-    val token = properties.getProperty("TMDB_TOKEN")
+    // Support environment variables for CI/CD, fallback to local.properties
+    val baseUrl = System.getenv("BASE_URL") ?: properties.getProperty("BASE_URL") ?: ""
+    val apiKey = System.getenv("TMDB_API_KEY") ?: properties.getProperty("TMDB_API_KEY") ?: ""
+    val token = System.getenv("TMDB_TOKEN") ?: properties.getProperty("TMDB_TOKEN") ?: ""
 
     defaultConfig {
         applicationId = "com.karvinok.moviesapp"
