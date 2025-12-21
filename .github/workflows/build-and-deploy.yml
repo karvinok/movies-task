@@ -54,18 +54,23 @@ jobs:
           COMMIT_SHA=$(git rev-parse --short HEAD)
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
 
+          # Create caption
+          CAPTION=$(cat <<EOF
+          Movies App - New Build
+
+          File: $APK_FILE
+          Branch: $BRANCH_NAME
+          Commit: $COMMIT_SHA
+          Message: $COMMIT_MSG
+
+          Built by GitHub Actions
+          EOF
+          )
+
           # Send document to Telegram
           curl -F "chat_id=${CHANNEL_ID}" \
                -F "document=@${APK_PATH}" \
-               -F "caption=🎬 Movies App - New Build
-
-📦 File: $APK_FILE
-🔖 Branch: $BRANCH_NAME
-📝 Commit: $COMMIT_SHA
-💬 Message: $COMMIT_MSG
-
-Built with ❤️ by GitHub Actions" \
-               -F "parse_mode=HTML" \
+               -F "caption=${CAPTION}" \
                "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
 
       - name: Upload APK as artifact
