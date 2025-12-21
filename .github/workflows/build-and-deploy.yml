@@ -24,16 +24,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Create local.properties
-        run: |
-          echo "BASE_URL=${{ secrets.BASE_URL }}" > local.properties
-          echo "TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}" >> local.properties
-          echo "TMDB_TOKEN=${{ secrets.TMDB_TOKEN }}" >> local.properties
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build Release APK
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
         run: ./gradlew assembleRelease --no-daemon
 
       - name: Get APK file name
