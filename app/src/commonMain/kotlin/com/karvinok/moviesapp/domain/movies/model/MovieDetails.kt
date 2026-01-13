@@ -5,7 +5,11 @@ data class MovieDetails(
     val title: String,
     val overview: String,
     val releaseDate: String,
-    val spokenLanguages: List<SpokenLanguage> = emptyList()
+    val spokenLanguages: List<SpokenLanguage> = emptyList(),
+    val cast: List<CastMember> = emptyList(),
+    val images: List<MovieImage> = emptyList(),
+    val voteAverage: Double = 0.0,
+    val voteCount: Int = 0
 )
 
 data class SpokenLanguage(
