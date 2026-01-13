@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.karvinok.moviesapp.core.design.Theme
-import kotlin.math.roundToInt
+import com.karvinok.moviesapp.core.design.theme.Theme.colors
+import com.karvinok.moviesapp.core.design.theme.Theme.typography
 
 @Composable
 internal fun UserReviewsBlock(
@@ -36,7 +36,7 @@ internal fun UserReviewsBlock(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(Theme.colors.surface)
+            .background(colors.surface01)
             .padding(16.dp)
     ) {
         // Header
@@ -47,14 +47,14 @@ internal fun UserReviewsBlock(
         ) {
             Text(
                 text = "User reviews",
-                style = Theme.typography.headingMedium,
-                color = Theme.colors.text
+                style = typography.headingMedium,
+                color = colors.text01
             )
 
             Text(
                 text = formatVoteCount(voteCount),
-                style = Theme.typography.body01,
-                color = Theme.colors.text.copy(alpha = 0.7f)
+                style = typography.body01,
+                color = colors.text01.copy(alpha = 0.7f)
             )
         }
 
@@ -78,17 +78,17 @@ internal fun UserReviewsBlock(
             ) {
                 Text(
                     text = String.format("%.1f", voteAverage),
-                    style = Theme.typography.headingMedium.copy(
+                    style = typography.headingMedium.copy(
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold
                     ),
-                    color = Theme.colors.text
+                    color = colors.text01
                 )
 
                 Text(
                     text = "/ 10",
-                    style = Theme.typography.body01,
-                    color = Theme.colors.text.copy(alpha = 0.7f)
+                    style = typography.body01,
+                    color = colors.text01.copy(alpha = 0.7f)
                 )
             }
         }
@@ -96,15 +96,15 @@ internal fun UserReviewsBlock(
         // Summary
         Text(
             text = "Summary",
-            style = Theme.typography.body01Highlight,
-            color = Theme.colors.text,
+            style = typography.body01Highlight,
+            color = colors.text01,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Text(
             text = generateSummary(voteAverage, voteCount),
-            style = Theme.typography.body01,
-            color = Theme.colors.text.copy(alpha = 0.8f),
+            style = typography.body01,
+            color = colors.text01.copy(alpha = 0.8f),
             lineHeight = 20.sp
         )
     }

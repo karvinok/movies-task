@@ -18,8 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.karvinok.moviesapp.core.design.Theme
 import com.karvinok.moviesapp.core.design.components.LoadingAsyncImage
+import com.karvinok.moviesapp.core.design.theme.Theme.colors
+import com.karvinok.moviesapp.core.design.theme.Theme.typography
 import com.karvinok.moviesapp.domain.movies.model.MovieImage
 
 @Composable
@@ -36,8 +37,8 @@ internal fun PhotosBlock(
     ) {
         Text(
             text = "Photos",
-            style = Theme.typography.headingMedium,
-            color = Theme.colors.text,
+            style = typography.headingMedium,
+            color = colors.text01,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
 
@@ -67,7 +68,7 @@ private fun PhotoItem(
             .width(itemWidth)
             .height(itemHeight.coerceAtLeast(150.dp).coerceAtMost(200.dp))
             .clip(RoundedCornerShape(12.dp))
-            .background(Theme.colors.surface),
+            .background(colors.surface01),
         contentAlignment = Alignment.Center
     ) {
         LoadingAsyncImage(
