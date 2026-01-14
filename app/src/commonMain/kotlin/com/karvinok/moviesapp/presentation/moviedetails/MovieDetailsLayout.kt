@@ -52,13 +52,16 @@ import com.karvinok.moviesapp.core.design.theme.Theme.colors
 import com.karvinok.moviesapp.core.design.theme.Theme.shapes
 import com.karvinok.moviesapp.core.design.theme.Theme.spacings
 import com.karvinok.moviesapp.core.design.theme.Theme.typography
+import com.karvinok.moviesapp.domain.movies.model.CastMember
 import com.karvinok.moviesapp.domain.movies.model.Movie
+import com.karvinok.moviesapp.domain.movies.model.MovieImage
 import com.karvinok.moviesapp.presentation.moviedetails.components.PhotosBlock
 import com.karvinok.moviesapp.presentation.moviedetails.components.TopCastBlock
 import com.karvinok.moviesapp.presentation.moviedetails.components.UserReviewsBlock
 import com.karvinok.moviesapp.presentation.movies.preview.mockMoviesForPreview
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
+
 
 @Composable
 internal fun MovieDetailsLayout(
@@ -395,7 +398,19 @@ private fun MovieDetailsLayoutPreview(
                         showLanguagesDialog = value == 2,
                         genre = if (value == 0) "Comedy" else null,
                         rating = "3.4",
-                        spokenLanguages = listOf("En, Es")
+                        spokenLanguages = listOf("En, Es"),
+                        voteAverage = 7.8,
+                        voteCount = 1234,
+                        cast = listOf(
+                            CastMember(id = 1, name = "John Doe", character = "Hero", profilePath = null),
+                            CastMember(id = 2, name = "Jane Smith", character = "Villain", profilePath = null),
+                            CastMember(id = 3, name = "Bob Wilson", character = "Sidekick", profilePath = null)
+                        ),
+                        images = listOf(
+                            MovieImage(filePath = "", width = 1920, height = 1080),
+                            MovieImage(filePath = "", width = 800, height = 1200),
+                            MovieImage(filePath = "", width = 1920, height = 1080)
+                        )
                     ),
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this@AnimatedVisibility,

@@ -36,7 +36,7 @@ internal fun UserReviewsBlock(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(colors.surface01)
+            .background(colors.surface01.copy(alpha = 0.1f))
             .padding(16.dp)
     ) {
         // Header
