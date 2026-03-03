@@ -36,12 +36,19 @@ fun MovieDTO.toDomain(): Movie = Movie(
     popularity = popularity ?: 0.0
 )
 
-fun MovieDTO.toMovieDetails(): MovieDetails = MovieDetails(
+fun MovieDTO.toMovieDetails(
+    cast: List<com.karvinok.moviesapp.domain.movies.model.CastMember> = emptyList(),
+    images: List<com.karvinok.moviesapp.domain.movies.model.MovieImage> = emptyList()
+): MovieDetails = MovieDetails(
     id = id,
     title = title.orEmpty(),
     overview = overview.orEmpty(),
     releaseDate = releaseDate.orEmpty(),
-    spokenLanguages = spokenLanguages?.map { it.toDomain() } ?: emptyList()
+    spokenLanguages = spokenLanguages?.map { it.toDomain() } ?: emptyList(),
+    cast = cast,
+    images = images,
+    voteAverage = voteAverage ?: 0.0,
+    voteCount = voteCount ?: 0
 )
 
 fun SpokenLanguageDTO.toDomain(): SpokenLanguage = SpokenLanguage(

@@ -49,6 +49,10 @@ internal class MovieDetailsViewModel(
                         overview = movieDetails.overview,
                         releaseDate = movieDetails.releaseDate.take(4),
                         spokenLanguages = movieDetails.spokenLanguages.map { it.name },
+                        cast = movieDetails.cast,
+                        images = movieDetails.images,
+                        voteAverage = movieDetails.voteAverage,
+                        voteCount = movieDetails.voteCount,
                         isLoading = false
                     )
                 }

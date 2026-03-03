@@ -1,5 +1,7 @@
 package com.karvinok.moviesapp.data.movies
 
+import com.karvinok.moviesapp.data.movies.model.CreditsDTO
+import com.karvinok.moviesapp.data.movies.model.ImagesDTO
 import com.karvinok.moviesapp.data.movies.model.MovieDTO
 import com.karvinok.moviesapp.data.movies.model.MoviesResponseDTO
 import de.jensklingenberg.ktorfit.http.GET
@@ -22,4 +24,10 @@ interface MoviesService {
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(@Path("movie_id") movieId: Int): Result<MovieDTO>
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(@Path("movie_id") movieId: Int): Result<CreditsDTO>
+
+    @GET("movie/{movie_id}/images")
+    suspend fun getMovieImages(@Path("movie_id") movieId: Int): Result<ImagesDTO>
 }
