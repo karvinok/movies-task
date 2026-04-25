@@ -9,6 +9,9 @@ import com.karvinok.moviesapp.core.network.networkModule
 import com.karvinok.moviesapp.data.movies.moviesDataModule
 import com.karvinok.moviesapp.domain.movies.moviesDomainModule
 import com.karvinok.moviesapp.presentation.movies.moviesUiModule
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.koin.core.context.loadKoinModules
@@ -30,6 +33,8 @@ private val configModule = module {
             isLenient = true
         }
     }
+
+    single<CoroutineDispatcher> { Dispatchers.IO }
 }
 
 private val moviesModule = module {

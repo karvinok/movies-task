@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val moviesUiModule = module {
     viewModelOf(::MoviesViewModel)
-    single { MoviesInteractor(get(), get(), get(), get()) }
+    singleOf(::MoviesInteractor)
     singleOf(::MoviesRouter)
 
     viewModelOf(::MovieDetailsViewModel)

@@ -6,6 +6,7 @@ xcuserdata
 !src/**/build/
 local.properties
 /iosApp/iosApp/Info.plist
+/iosApp/Info.plist
 .idea
 captures
 .externalNativeBuild
@@ -51,4 +52,7 @@ lint/tmp/
 **/.DS_Store
 .DS_Store
 .claude
+/.claude
+/skills/
+/.agents
 CLAUDE.md

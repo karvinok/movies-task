@@ -7,16 +7,12 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-interface GetMovieDetailsUseCase {
-    suspend operator fun invoke(movieId: Int): Result<MovieDetails>
-}
-
-internal class GetMovieDetailsUseCaseImpl(
+internal class GetMovieDetailsUseCase(
     private val moviesRemoteRepository: MoviesRemoteRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : GetMovieDetailsUseCase {
+) {
 
-    override suspend fun invoke(movieId: Int): Result<MovieDetails> = withContext(dispatcher) {
+    suspend operator fun invoke(movieId: Int): Result<MovieDetails> = withContext(dispatcher) {
         val generalDetailsResult = async {
             moviesRemoteRepository.getMovieDetails(movieId)
         }.await()
@@ -27,7 +23,8 @@ internal class GetMovieDetailsUseCaseImpl(
 
         val generalDetails =
             generalDetailsResult.getOrElse { return@withContext Result.failure(it) }
-        val releaseDateDetails = releaseDateResult.getOrElse { return@withContext Result.failure(it) }
+        val releaseDateDetails =
+            releaseDateResult.getOrElse { return@withContext Result.failure(it) }
 
         return@withContext Result.success(
             generalDetails.copy(

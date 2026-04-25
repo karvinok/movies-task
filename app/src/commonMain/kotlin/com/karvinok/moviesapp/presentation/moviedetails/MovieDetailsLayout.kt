@@ -57,7 +57,6 @@ import com.karvinok.moviesapp.domain.movies.model.Movie
 import com.karvinok.moviesapp.domain.movies.model.MovieImage
 import com.karvinok.moviesapp.presentation.moviedetails.components.PhotosBlock
 import com.karvinok.moviesapp.presentation.moviedetails.components.TopCastBlock
-import com.karvinok.moviesapp.presentation.moviedetails.components.UserReviewsBlock
 import com.karvinok.moviesapp.presentation.movies.preview.mockMoviesForPreview
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -93,13 +92,6 @@ internal fun MovieDetailsLayout(
             overview = state.overview,
             isLoadingDetails = state.isLoading
         )
-
-        AnimatedVisibility(!state.isLoading) {
-            UserReviewsBlock(
-                voteAverage = state.voteAverage,
-                voteCount = state.voteCount
-            )
-        }
 
         AnimatedVisibility(!state.isLoading) {
             TopCastBlock(cast = state.cast)

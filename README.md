@@ -1,146 +1,119 @@
-# Movies App - TMDB Client
+# Template App
 
-## Application is built in Compose Multiplatform.
+TMDB client built with Compose Multiplatform.
 
-## Setup Instructions
+## Quick Start
 
-### 0. Use AndroidStudio 2025.1.3 
-This step is required to use latest CMP libraries where kotlin 2.2.0 and AGP 8.13 needed to compile. 
-
-### 1. Clone the Repository
 ```bash
 git clone <repository-url>
-cd Movies
+cd movies-task
 ```
 
-### 2. Obtain TMDB API Key
-1. Visit [TMDB Website](https://www.themoviedb.org)
-2. Create an account and verify your email
-3. Go to Settings → API → Create API Key (v3)
-4. Copy your API key
+1. Create a TMDB account at [themoviedb.org](https://www.themoviedb.org).
+2. Generate an API key and token.
+3. Fill in the credentials in `local.properties` and `iosApp/iosApp/Info.plist`.
 
-### 3. Configure API Key
-Change 3 parameters in `local.properties` and `iosApp/Info.plist` files:
-```local.properties
+Example `local.properties`:
+
+```properties
 BASE_URL=https://api.themoviedb.org/3/
 TMDB_API_KEY=your_api_key_here
 TMDB_TOKEN=your_token_here
-
-```
-```Info.plist
-	<key>BASE_URL</key>
-	<string>https://api.themoviedb.org/3/</string>
-	<key>TMDB_API_KEY</key>
-	<string>your_api_key_here</string>
-    <key>TMDB_TOKEN</key>
-    <string>your_token_here</string>
 ```
 
-### 4. Build and Run
+Example `iosApp/iosApp/Info.plist` values:
+
+```xml
+<key>BASE_URL</key>
+<string>https://api.themoviedb.org/3/</string>
+<key>TMDB_API_KEY</key>
+<string>your_api_key_here</string>
+<key>TMDB_TOKEN</key>
+<string>your_token_here</string>
+```
+
+## Requirements
+
+- Android Studio `2025.1.3`
+- Xcode with iOS Simulator support
+- JDK `21`
+- Android SDK and at least one emulator or connected device
+
+Android Studio `2025.1.3` is required because the project uses recent Compose Multiplatform, Kotlin, and AGP versions.
+
+## Run The App
+
+### One-command scripts
+
+```bash
+# Shared entry point
+./scripts/run-mobile.sh android
+./scripts/run-mobile.sh ios
+./scripts/run-mobile.sh all
+```
+
+You can also pass an explicit target:
+
+```bash
+# Android device serial
+./scripts/run-android.sh R5CW142SSLF
+
+# iOS simulator name or UDID
+./scripts/run-ios.sh "iPhone 17 Pro"
+./scripts/run-mobile.sh ios "iPhone 17 Pro"
+```
+
+### Manual commands
 
 #### Android
+
 ```bash
-# Build debug APK
 ./gradlew :app:assembleDebug
-
-# Install and run on connected device/emulator
 ./gradlew :app:installDebug
-
-# Build release APK
 ./gradlew :app:assembleRelease
-
-# Clean build (if needed)
 ./gradlew clean build
 ```
 
 #### iOS
-Option 1: Open the `/iosApp` directory in Xcode and build/run from there
-Option 2: use the IDE's run configuration `iosApp`
+
+- Open `iosApp` in Xcode and run the `iosApp` scheme.
+- Or use the IDE run configuration named `iosApp`.
 
 ## Project Structure
 
-```
+```text
 app/src/
-├── commonMain/kotlin/           # Shared Kotlin code
-│   ├── core/
-│   │   ├── base/               # Base classes (ViewModel, State, etc.)
-│   │   ├── database/           # Room database configuration
-│   │   ├── design/             # Design system and themes
-│   │   ├── di/                 # Dependency injection modules
-│   │   └── network/            # Network configuration
-│   ├── data/                   # Data layer implementation
-│   │   └── movies/
-│   │       ├── api/            # API service definitions
-│   │       ├── db/             # Database entities and DAOs
-│   │       └── repository/     # Repository implementations
-│   ├── domain/                 # Business logic layer
-│   │   └── movies/
-│   │       ├── model/          # Domain models
-│   │       └── usecase/        # Use cases
-│   └── presentation/           # UI layer
-│       ├── movies/             # Movies list screen
-│       └── moviedetails/       # Movie details screen
-│
-├── androidMain/kotlin/          # Android-specific code
+├── commonMain/kotlin/          # Shared Kotlin code
+│   ├── core/                   # Base, DI, design, db, navigation, network
+│   ├── data/                   # Repository and DTO implementations
+│   ├── domain/                 # Use cases and domain models
+│   └── presentation/           # Feature UI, state, and view models
+├── androidMain/kotlin/         # Android-specific code
 └── iosMain/kotlin/             # iOS-specific code
 ```
 
 ## Architecture
 
-The app follows **Clean Architecture** principles with clear separation of concerns:
+The app follows Clean Architecture with a shared KMP codebase.
 
-### Layers
-- **Presentation Layer**: ViewModels, UI state management, Compose screens
-- **Domain Layer**: Use cases, business logic, domain models
-- **Data Layer**: Repositories, API services, database entities
+- Presentation: Compose screens, state, intents, events, view models
+- Domain: use cases and domain models
+- Data: repositories, API layer, persistence
 
-### Key Patterns
-- **MVI**: with reactive state management
-- **Repository Pattern**: Abstraction over data sources
-- **Use Case Pattern**: Encapsulated business logic operations
+Main patterns used:
 
-## Technologies Used
+- MVI-style state management
+- Use-case driven domain layer
 
-- **Kotlin Multiplatform**: 2.2.10
-- **Compose Multiplatform**: 1.8.2
-- **Room Database with Paging3**: Local data persistence
-- **Koin**: Dependency injection
-- **Ktorfit + Ktor**: HTTP client for API calls
-- **Kotlinx Serialization**: JSON parsing
+## Tech Stack
 
-## TODO: 
-
-### 1 Modularization
-1 Modularization is not implemented due to time constraints, but common separation of concerns is archived, so it wouldn't be a problem.
-As a next step, I'd separate each core/domain/data/presentation folder into a module with extendable "convention gradle plugin" https://docs.gradle.org/current/userguide/custom_plugins.html
-to obtain extendability and configurability of each module:
-KotlinLibraryPlugin (only kmp deps) ->
-ComposeLibraryPlugin (only cmp deps) ->
-FeatureLibraryPlugin (project deps)
-
-So code duplication and price of setting up a new feature is minimized:
-
-```kotlin
-import DependenciesPlugin.Config
-
-plugins {
-    id(Plugins.featureLibraryPlugin)
-}
-
-android {
-    namespace = Config.namespace + ".presentation.movies"
-}
-
-commonDependencies {
-    implementation(project(":domain:movies"))
-    implementation(project(":core:design"))
-}
-```
-
-### 2 React to configurations changes (rotation and screen size)
-
-### 3 Unit tests to cover pagination logic
+- Kotlin Multiplatform `2.2.10`
+- Compose Multiplatform `1.8.2`
+- Room + Paging
+- Koin
+- Ktorfit + Ktor
+- Kotlinx Serialization
 
 ## License
 
-This project is created for demonstration purposes as part of a coding assessment.
+This project was created for a coding assessment and as a template for testing new features and lib versions.

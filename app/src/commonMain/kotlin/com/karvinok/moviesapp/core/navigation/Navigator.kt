@@ -1,32 +1,28 @@
 package com.karvinok.moviesapp.core.navigation
 
+import androidx.navigation3.runtime.NavKey
+import kotlinx.coroutines.flow.Flow
+
 /**
- * Navigation controller wrapper
+ * Navigation facade over a Nav3 [androidx.navigation3.runtime.NavBackStack].
+ * A single [Navigator] is provided by Koin; the current back stack is bound
+ * into Koin for the lifetime of the root nav host via [LoadNavigationState].
  */
 interface Navigator {
 
-    /**
-     * Navigates to screen with particular route
-     */
-    fun navigateTo(route: String)
+    fun resultFlow(): Flow<Any>
 
-    /**
-     * Navigates to screen with particular route and clear backstack
-     */
-    fun navigateAndClear(route: String)
+    fun navigate(key: NavKey)
 
-    /**
-     * Navigates to screen with particular route and popup to current destination
-     */
-    fun navigateAndClearCurrent(route: String)
+    fun navigateAndClear(key: NavKey)
 
-    /**
-     * Navigates back
-     */
+    fun navigateAndPopTo(key: NavKey, popTo: NavKey, inclusive: Boolean = false)
+
+    fun navigateAndClearCurrent(key: NavKey)
+
+    fun isCurrentDestination(key: NavKey): Boolean
+
     fun back()
 
-    /**
-     * Checks if current destination is the same as the given route
-     */
-    fun isCurrentDestination(route: String): Boolean
+    fun backWithResult(result: Any)
 }

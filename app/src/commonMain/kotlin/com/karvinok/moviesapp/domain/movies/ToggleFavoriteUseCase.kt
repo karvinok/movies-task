@@ -5,16 +5,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
-interface ToggleFavoriteUseCase {
-    suspend operator fun invoke(movieId: Int)
-}
 
-internal class ToggleFavoriteUseCaseImpl(
+internal class ToggleFavoriteUseCase(
     private val moviesLocalRepository: MoviesLocalRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : ToggleFavoriteUseCase {
+) {
 
-    override suspend fun invoke(movieId: Int) = withContext(dispatcher) {
+    suspend operator fun invoke(movieId: Int) = withContext(dispatcher) {
         val isFavorited = moviesLocalRepository.isFavorited(movieId)
         if (isFavorited) {
             moviesLocalRepository.removeFavorite(movieId)

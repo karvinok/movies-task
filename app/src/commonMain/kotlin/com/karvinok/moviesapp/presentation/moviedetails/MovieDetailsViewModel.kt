@@ -1,24 +1,20 @@
 package com.karvinok.moviesapp.presentation.moviedetails
 
-import androidx.lifecycle.SavedStateHandle
-import com.karvinok.moviesapp.core.base.BaseEvent
 import com.karvinok.moviesapp.core.base.StateEventViewModel
 import com.karvinok.moviesapp.core.base.launch
 import com.karvinok.moviesapp.domain.movies.model.Movie
-import com.karvinok.moviesapp.presentation.moviedetails.navigation.MovieDetailsNavigationConstants.ARG_MOVIE_ID
-import com.karvinok.moviesapp.presentation.moviedetails.navigation.MovieDetailsNavigationConstants.ARG_MOVIE_POSTER_PATH
-import com.karvinok.moviesapp.presentation.moviedetails.navigation.MovieDetailsNavigationConstants.ARG_MOVIE_TITLE
+import com.karvinok.moviesapp.presentation.moviedetails.navigation.MovieDetailsNavKey
 
 internal class MovieDetailsViewModel(
-    savedStateHandle: SavedStateHandle,
+    navKey: MovieDetailsNavKey,
     private val interactor: MovieDetailsInteractor,
     private val router: MovieDetailsRouter
 ) : StateEventViewModel<MovieDetailsState, MovieDetailsEvent, MovieDetailsIntent>(
     initialState = MovieDetailsState(
         movie = Movie(
-            id = savedStateHandle.get<Int>(ARG_MOVIE_ID) ?: 0,
-            title = savedStateHandle.get<String>(ARG_MOVIE_TITLE).orEmpty(),
-            posterPath = savedStateHandle[ARG_MOVIE_POSTER_PATH],
+            id = navKey.movieId,
+            title = navKey.movieTitle,
+            posterPath = navKey.moviePosterPath,
             popularity = 0.0
         )
     )

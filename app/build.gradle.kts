@@ -24,7 +24,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -57,7 +56,9 @@ kotlin {
             implementation(libs.kotlin.serialization)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(libs.androidx.navigation.compose)
+            implementation(libs.androidx.navigation3.runtime)
+            implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+            implementation(libs.jetbrains.navigation3.ui)
             implementation(libs.koin.compose.viewmodel.navigation)
             implementation(libs.paging.multiplatform.common)
             implementation(libs.paging.multiplatform.compose)
@@ -84,6 +85,7 @@ kotlin {
 }
 
 android {
+    val generatedVersionCode: Int by rootProject.extra
     namespace = "com.karvinok.moviesapp"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
@@ -102,7 +104,7 @@ android {
         applicationId = "com.karvinok.moviesapp"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
+        versionCode = generatedVersionCode
         versionName = "1.0"
 
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
@@ -138,7 +140,6 @@ dependencies {
 fun DependencyHandler.kmpKsp(dependency: Provider<MinimalExternalModuleDependency>) {
     val targets = listOf(
         "kspAndroid",
-        "kspIosX64",
         "kspIosArm64",
         "kspIosSimulatorArm64"
     )
